@@ -1,8 +1,8 @@
 # astrowrap
 Wrapper of the astroserver using the data catalog
 
-Author: Nicola Omodei (nicola.omodei@gmail.com)
-
+## Author: Nicola Omodei (nicola.omodei@gmail.com)
+'''
 usage: getLATFitsFiles.py [-h] [--wdir WDIR] --outfile OUTFILE --minTimestamp
                           MINTIMESTAMP --maxTimestamp MAXTIMESTAMP --type
                           {FT2,FT2SECONDS,FT1,EXTENDEDFT1} [--verbose {0,1}]
@@ -23,3 +23,4 @@ optional arguments:
                         Type of the files
   --verbose {0,1}       Verbose or silent output
   --overwrite {0,1}     Overwrite if existsing?
+'''
