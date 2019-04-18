@@ -45,3 +45,5 @@ An extended FT1 file:
  ```
 Note that no extra selection are made, so the FT1 files will always contain the full sky, and the full energy range. Subsequent selection cut needs to be independently done with gtselect, gtmktime, etc...
 
+To decide which FT1 you need to retrieve, please ahve a look here:
+https://fermi.gsfc.nasa.gov/ssc/data/analysis/documentation/Cicerone/Cicerone_Data/LAT_DP.html
