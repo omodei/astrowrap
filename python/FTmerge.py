@@ -102,8 +102,8 @@ def ft1merge(infiles, outfile):
 class UnpaddedFT2Files(list):
     def __init__(self, infiles, prefix='ft2_filtered'):
         list.__init__(self)
-        for i, infile in enumerate(infiles):
-            outfile = "ft2_filtered_%04i.fits" % i
+        for infile in infiles:
+            outfile = infile.replace(".fits","_filtered.fits")
             try:
                 os.remove(outfile)
             except OSError:
