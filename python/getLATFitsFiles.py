@@ -151,7 +151,7 @@ if __name__=='__main__':
 	    flag=False
 	    if os.path.exists(args.outfile): flag=aw.checkFile(args.outfile,args.minTimestamp,args.maxTimestamp)
 	    if (flag==False or args.overwrite):
-		    file_out_path=aw.getFilesDataCatalog(args.minTimestamp,args.maxTimestamp, args.type, logicalPath='/Data/Flight/Level1/LPA',overwrite=args.overwrite)
+		    file_out_path=aw.getFilesDataCatalog(args.minTimestamp,args.maxTimestamp, args.type, logicalPath=_logicalPath,overwrite=args.overwrite)
 		    runShellCommand('mv %s %s' %(file_out_path,args.outfile))
 		    pass
 	    pass
