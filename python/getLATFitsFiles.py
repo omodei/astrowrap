@@ -59,14 +59,15 @@ class astrowrap():
 		return True
 	
 	def getDataCatalogList(self,tstart, tend, group='EXTENDEDFT1',logicalPath='/Data/Flight/Level1/LPA'):
-		if 'FT2' in group:                               logicalPath = '/Data/Flight/Reprocess/P202'
-		if 'FT2SECONDS' in group:                        logicalPath = '/Data/Flight/Reprocess/P203'
-		
-		if 'P305' in logicalPath and tstart > 564943566: logicalPath = "/Data/Flight/Level1/LPA" # Level one pipeline
-		if 'P302' in logicalPath and tstart > 456835199: logicalPath = "/Data/Flight/Level1/LPA" # Level one pipeline
-		if 'P203' in logicalPath and tstart > 423447612: logicalPath = "/Data/Flight/Level1/LPA" # Level one pipeline
-		if 'P202' in logicalPath and tstart > 405333211: logicalPath = "/Data/Flight/Level1/LPA" # Level one pipeline
-		
+		if 'FT2' in group: logicalPath = '/Data/Flight/Reprocess/P310'
+		if 'FT2SECONDS' in group: logicalPath = '/Data/Flight/Reprocess/P310'
+
+		if 'P310' in logicalPath and tstart > 640619509: logicalPath = "/Data/Flight/Level1/LPA"  # Level one pipeline
+		if 'P305' in logicalPath and tstart > 564939451: logicalPath = "/Data/Flight/Level1/LPA"  # Level one pipeline
+		if 'P302' in logicalPath and tstart > 456835199: logicalPath = "/Data/Flight/Level1/LPA"  # Level one pipeline
+		if 'P203' in logicalPath and tstart > 423447612: logicalPath = "/Data/Flight/Level1/LPA"  # Level one pipeline
+		if 'P202' in logicalPath and tstart > 405333211: logicalPath = "/Data/Flight/Level1/LPA"  # Level one pipeline
+
 		fileListName='%s/fileList%s' % (self.wdir,group)
 		
 		met_filter='nMetStop>=%s && nMetStart<%s' % (tstart,tend)    
