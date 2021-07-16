@@ -15,6 +15,7 @@ cuts, are the same for all of the files.
 import os,sys
 import astropy.io.fits as pyfits
 from GtApp import GtApp
+from met2date import met2date
 
 fcopy = GtApp('fcopy')
 fmerge = GtApp('fmerge')
@@ -34,7 +35,7 @@ def _fileList(infiles, extnum=1):
 def _getTimeKeywords(infiles, extnum=1):
     header = pyfits.open(infiles[0])[extnum].header
     tstart = header['TSTART']
-    tstop = header['TSTOP']
+    tstop  = header['TSTOP']
     for item in infiles[1:]:
         header = pyfits.open(item)[extnum].header
         if header['TSTART'] < tstart:
@@ -48,10 +49,57 @@ def updateTimeKeywords(fitsfile, tstart, tstop):
     foo[0].header['FILENAME'] = os.path.basename(fitsfile)
     for i in range(len(foo)):
         try:
-            foo[i].header['TSTART'] = tstart
-            foo[i].header['TSTOP'] = tstop
+            foo[i].header['TSTART']   = tstart
+            foo[i].header['TSTOP']    = tstop
+            foo[i].header['DATE-OBS'] = met2date(tstart)
+            foo[i].header['DATE-END'] = met2date(tstop)
         except KeyError:
             pass
+    foo.writeto(fitsfile, overwrite=True)
+
+def updateTLKeywords(fitsfile):
+    foo = pyfits.open(fitsfile)
+    foo[0].header['SOFTWARE'] = 'astrowrap'
+    foo['SC_DATA'].header['TLMAX1']   = 10000000000.0
+    foo['SC_DATA'].header['TLMAX10'] =      100.0
+    foo['SC_DATA'].header['TLMAX11'] =       90.0
+    foo['SC_DATA'].header['TLMAX12'] =       90.0
+    foo['SC_DATA'].header['TLMAX14'] =      360.0
+    foo['SC_DATA'].header['TLMAX15'] =       90.0
+    foo['SC_DATA'].header['TLMAX16'] =      360.0
+    foo['SC_DATA'].header['TLMAX17'] =       90.0
+    foo['SC_DATA'].header['TLMAX18'] =      360.0
+    foo['SC_DATA'].header['TLMAX19'] =       90.0
+    foo['SC_DATA'].header['TLMAX2']  = 10000000000.0
+    foo['SC_DATA'].header['TLMAX20'] =      180.0
+    foo['SC_DATA'].header['TLMAX29'] =      360.0
+    foo['SC_DATA'].header['TLMAX30'] =       90.0
+    foo['SC_DATA'].header['TLMAX4']  =       90.0
+    foo['SC_DATA'].header['TLMAX5']  =      360.0
+    foo['SC_DATA'].header['TLMAX6']  =    10000.0
+    foo['SC_DATA'].header['TLMAX7']  =      360.0
+    foo['SC_DATA'].header['TLMAX8']  =       90.0
+    foo['SC_DATA'].header['TLMAX9']  =      100.0
+    foo['SC_DATA'].header['TLMIN1']  =        0.0
+    foo['SC_DATA'].header['TLMIN10'] =        0.0
+    foo['SC_DATA'].header['TLMIN11'] =        0.0
+    foo['SC_DATA'].header['TLMIN12'] =      -90.0
+    foo['SC_DATA'].header['TLMIN14'] =        0.0
+    foo['SC_DATA'].header['TLMIN15'] =      -90.0
+    foo['SC_DATA'].header['TLMIN16'] =        0.0
+    foo['SC_DATA'].header['TLMIN17'] =      -90.0
+    foo['SC_DATA'].header['TLMIN18'] =        0.0
+    foo['SC_DATA'].header['TLMIN19'] =      -90.0
+    foo['SC_DATA'].header['TLMIN2']  =        0.0
+    foo['SC_DATA'].header['TLMIN20'] =     -180.0
+    foo['SC_DATA'].header['TLMIN29'] =        0.0
+    foo['SC_DATA'].header['TLMIN30'] =      -90.0
+    foo['SC_DATA'].header['TLMIN4']  =      -90.0
+    foo['SC_DATA'].header['TLMIN5']  =        0.0
+    foo['SC_DATA'].header['TLMIN6']  =        0.0
+    foo['SC_DATA'].header['TLMIN7']  =        0.0
+    foo['SC_DATA'].header['TLMIN8']  =      -90.0
+    foo['SC_DATA'].header['TLMIN9']  =        0.0
     foo.writeto(fitsfile, overwrite=True)
 
 def ft1merge(infiles, outfile):
@@ -127,6 +175,7 @@ def ft2merge(infiles_arg, outfile, filter_zeros=True):
     for item in infiles:
         ft2list.write("%s\n" % item)
     ft2list.close()
+    print 'ft2merge: tmpfile=',tmpfile
     fmerge['infiles'] = '@%s' % tmpfile
     fmerge['outfile'] = outfile
     fmerge['clobber'] = 'yes'
@@ -135,6 +184,7 @@ def ft2merge(infiles_arg, outfile, filter_zeros=True):
     fmerge['lastkey'] = ' '
     fmerge.run()
     updateTimeKeywords(outfile, tstart, tstop)
+    updateTLKeywords(outfile)
     try:
         os.remove(tmpfile)
     except OSError:

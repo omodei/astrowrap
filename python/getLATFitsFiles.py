@@ -23,7 +23,7 @@ def runShellCommand(string,echo=False):
 class astrowrap():
 	''' Emulate the astroserver using the datacatalog at SLAC '''
 	def __init__(self, verbose = True,  wdir    = 'WDIR'):
-
+		print('Initializing astrowrap...wdir=',wdir)
 		self.wdir  = wdir
 		self.verbose = verbose
 		pass
@@ -103,7 +103,7 @@ class astrowrap():
 		return path_list
 	
 	
-	def getFilesDataCatalog(self, tstart, tend, group, logicalPath='/Data/Flight/Level1/LPA',overwrite=False):
+	def getFilesDataCatalog(self, tstart, tend, group, logicalPath='/Data/Flight/Level1/LPA',overwrite=False,outfile=None):
 		import FTmerge as FTM		
 		merging_alg={'FT2':FTM.ft2merge,
 			     'FT2SECONDS':FTM.ft2merge,
@@ -125,6 +125,12 @@ class astrowrap():
 		else:
 			merging_alg[group](path_list,file_out_path)            
 			pass
+		if outfile is not None: 
+			runShellCommand('mv %s %s' %(file_out_path,outfile))
+			file_out_path=outfile
+			pass
+		tmpdir = '%s/tmp' %(self.wdir)
+		runShellCommand('rm -rf %s' % tmpdir,self.verbose)
 		return file_out_path
 	
 if __name__=='__main__':
@@ -149,10 +155,7 @@ if __name__=='__main__':
     if args.minTimestamp<args.maxTimestamp: 
 	    aw=astrowrap(args.verbose,args.wdir)
 	    flag=False
-	    if os.path.exists(args.outfile): flag=aw.checkFile(args.outfile,args.minTimestamp,args.maxTimestamp)
-	    if (flag==False or args.overwrite):
-		    file_out_path=aw.getFilesDataCatalog(args.minTimestamp,args.maxTimestamp, args.type, logicalPath='/Data/Flight/Level1/LPA',overwrite=args.overwrite)
-		    runShellCommand('mv %s %s' %(file_out_path,args.outfile))
-		    pass
+	    if os.path.exists(args.outfile):    flag=aw.checkFile(args.outfile,args.minTimestamp,args.maxTimestamp)
+	    if (flag==False or args.overwrite): file_out_path=aw.getFilesDataCatalog(args.minTimestamp,args.maxTimestamp, args.type, logicalPath='/Data/Flight/Level1/LPA',overwrite=args.overwrite,outfile=args.outfile)
 	    pass
     
