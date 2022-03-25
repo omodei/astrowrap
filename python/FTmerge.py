@@ -24,7 +24,7 @@ fchecksum = GtApp('fchecksum')
 def _fileList(infiles, extnum=1):
     filelist = 'ft1merge_file_list'
     if len(infiles) > 1000:
-        raise RuntimeError, ('Number of input files exceeds 1000, '
+        raise RuntimeError('Number of input files exceeds 1000, '
                              + 'the fmerge maximum.')
     infile_list = open(filelist, 'w')
     for item in infiles:
@@ -166,7 +166,7 @@ class UnpaddedFT2Files(list):
 def ft2merge(infiles_arg, outfile, filter_zeros=True):
     tstart, tstop = _getTimeKeywords(infiles_arg)
     if not infiles_arg:
-        raise RuntimeError, "FT2 file list is empty"
+        raise RuntimeError("FT2 file list is empty")
     infiles = infiles_arg
     if filter_zeros:
         infiles = UnpaddedFT2Files(infiles_arg)
@@ -175,7 +175,7 @@ def ft2merge(infiles_arg, outfile, filter_zeros=True):
     for item in infiles:
         ft2list.write("%s\n" % item)
     ft2list.close()
-    print 'ft2merge: tmpfile=',tmpfile
+    print ('ft2merge: tmpfile=',tmpfile)
     fmerge['infiles'] = '@%s' % tmpfile
     fmerge['outfile'] = outfile
     fmerge['clobber'] = 'yes'
@@ -211,5 +211,5 @@ if __name__ == '__main__':
     # os.system('fverify merged_files.fits')
     # os.system('fchecksum merged_files.fits update=yes')
     else:
-        print 'usage: ./merge_files.py \'*events*\''
+        print ('usage: ./merge_files.py \'*events*\'')
         

@@ -15,7 +15,7 @@ def runShellCommand(string,echo=False):
 		else:
 			pass
 		pass
-	except OSError, e:
+	except OSError as e:
 		print >>sys.stderr, "Execution failed:", e
 		pass
 	pass
@@ -81,7 +81,7 @@ class astrowrap():
 		runShellCommand('rm -rf %s' % tmpdir,self.verbose)
 		runShellCommand('mkdir -p %s' % tmpdir,self.verbose)
 		
-		fileListFile = file(fileListName,'r')
+		fileListFile = open(fileListName,'r')
 		mylist       = fileListFile.readlines()
 		mylist.sort()
 
