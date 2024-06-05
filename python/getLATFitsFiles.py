@@ -71,8 +71,9 @@ class astrowrap():
 
         fileListName='%s/fileList%s' % (self.wdir,group)
         
-        met_filter='nMetStop>=%s && nMetStart<%s' % (tstart,tend)    
-        cmd='$DATACATALOG_EXE find --group %s --filter \'%s\' %s > %s' % (group,met_filter,logicalPath,fileListName)    
+        met_filter='nMetStop>=%s && nMetStart<%s' % (tstart,tend)
+        app=os.getenv('DATACATALOG_EXE','/sdf/home/g/glast/a/datacat/prod/datacat')
+        cmd='%s find --group %s --filter \'%s\' %s > %s' % (app,group,met_filter,logicalPath,fileListName)    
         runShellCommand(cmd,self.verbose)        
         return fileListName
 
