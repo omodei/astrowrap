@@ -26,6 +26,11 @@ optional arguments:
 ```
 Make sute the python directory is addded to your $PATH
 
+The environment variable **DATACATALOG_EXE** needs to point to the datacatalog application. If you don't define it, it points to the datacatalog app at SLAC in S3DF : `/sdf/home/g/glast/a/datacat/prod/datacat`. 
+If you want to change it, add this to your setup:
+```
+export DATACATALOG_EXE=_new_datacatalog_app_path_
+```
 ##Examples:
 The following examples downloads an FT2 file:
 
